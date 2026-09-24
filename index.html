@@ -173,6 +173,16 @@ const END   = Date.UTC(2026, 8, 25, 12, 30);  // 2026-09-25 18:00 IST
 const SLOT  = 5 * 60 * 1000;
 const TOTAL = 144;
 
+/* demo override — ?demo=all shows everything, ?demo=N simulates mid-day (for previewing) */
+(function(){
+  const q = new URLSearchParams(location.search).get("demo");
+  if (!q) return;
+  let fake;
+  if (q === "all") fake = END + 3600 * 1000;
+  else { const n = parseInt(q, 10); if (n > 0) fake = START + (n - 1) * SLOT + 1000; }
+  if (fake) Date.now = () => fake;
+})();
+
 const $ = id => document.getElementById(id);
 const wall = $("wall");
 
